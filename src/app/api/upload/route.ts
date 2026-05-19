@@ -15,17 +15,10 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Create uploads directory if it doesn't exist
-    const uploadDir = path.join(process.cwd(), 'public/uploads');
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
-    const filepath = path.join(uploadDir, filename);
-
-    await writeFile(filepath, buffer);
-    const fileUrl = `/uploads/${filename}`;
+    // Convert the image to a base64 string
+    const mimeType = file.type || 'image/jpeg';
+    const base64String = buffer.toString('base64');
+    const fileUrl = `data:${mimeType};base64,${base64String}`;
 
     return NextResponse.json({ success: true, url: fileUrl });
   } catch (e) {

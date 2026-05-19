@@ -35,7 +35,7 @@ model Question {
   options       String   // Store as JSON string: ["A", "B", "C", "D"]
   correctAnswer String   // Exact string or index
   explanation   String?
-  imageUrl      String?
+  imageUrl      String? @db.MediumText
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -57,6 +57,6 @@ model Result {
 model Settings {
   id               String @id @default("default")
   appName          String @default("LET Reviewer")
-  logoUrl          String?
+  logoUrl          String? @db.MediumText
   examTimerSeconds Int    @default(1800)
 }
