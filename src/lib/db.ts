@@ -4,6 +4,7 @@ export interface LocalCategory {
   id: string;
   name: string;
   description: string | null;
+  examTimerSeconds?: number;
 }
 
 export interface LocalQuestion {
