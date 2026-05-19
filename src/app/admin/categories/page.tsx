@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import styles from '../admin.module.css';
 import CategoryClient from '@/components/CategoryClient';
 
+export const dynamic = "force-dynamic";
+
+
 export default async function CategoriesPage() {
   const categories = await prisma.category.findMany({
     orderBy: { createdAt: 'desc' },

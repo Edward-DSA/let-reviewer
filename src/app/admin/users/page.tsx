@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import styles from '../admin.module.css';
 import { addUser, deleteUser, resetPassword } from '@/app/admin/actions';
 
+export const dynamic = "force-dynamic";
+
+
 export default async function UsersPage() {
   const users = await prisma.user.findMany({ orderBy: { username: 'asc' } });
 

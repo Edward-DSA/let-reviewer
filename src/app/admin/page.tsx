@@ -1,6 +1,9 @@
 import styles from './admin.module.css';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = "force-dynamic";
+
+
 export default async function AdminDashboard() {
   const categories  = await prisma.category.count();
   const questions   = await prisma.question.count();

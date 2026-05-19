@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import styles from '../admin.module.css';
 import QuestionClient from '@/components/QuestionClient';
 
+export const dynamic = "force-dynamic";
+
+
 export default async function QuestionsPage() {
   const categories = await prisma.category.findMany();
   const questions = await prisma.question.findMany({
