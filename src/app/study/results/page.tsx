@@ -9,32 +9,9 @@ export default function ResultsPage() {
   const results   = useLiveQuery(() => db.results.orderBy('createdAt').reverse().toArray());
   const categories = useLiveQuery(() => db.categories.toArray());
   const profile   = useLiveQuery(() => db.profile.get(1));
-  const [syncing, setSyncing] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
 
   const getCatName = (id: string) => categories?.find(c => c.id === id)?.name || 'Unknown';
-
-  const handleSync = async () => {
-    if (!results) return;
-    const unsynced = results.filter(r => r.synced === 0);
-    if (!unsynced.length) return alert('All results are already synced!');
-    setSyncing(true);
-    try {
-      const res = await fetch('/api/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ results: unsynced }),
-      });
-      if (res.ok) {
-        await db.transaction('rw', db.results, async () => {
-          for (const r of unsynced) if (r.id) await db.results.update(r.id, { synced: 1 });
-        });
-        alert('Results synced successfully! ✅');
-      }
-    } catch { alert('Sync failed. Check your connection.'); }
-    finally { setSyncing(false); }
-  };
-
   // ── Compute stats ──────────────────────────────────────────────────────
   interface CatStat { name: string; id: string; avg: number; attempts: number; }
   const catStats: CatStat[] = [];
@@ -71,11 +48,6 @@ export default function ResultsPage() {
           <p className="text-muted">Track your progress across all subjects.</p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          {unsyncedCount > 0 && (
-            <button className="btn btn-success" onClick={handleSync} disabled={syncing}>
-              {syncing ? '⏳ Syncing…' : `☁️ Sync ${unsyncedCount} Result${unsyncedCount !== 1 ? 's' : ''}`}
-            </button>
-          )}
           <button className="btn btn-outline" onClick={() => router.push('/study')}>← Dashboard</button>
         </div>
       </div>

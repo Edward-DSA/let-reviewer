@@ -164,14 +164,6 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
               animation: isSyncing ? 'pulse 1s infinite' : 'none', flexShrink: 0,
             }} />
             <span style={{ color: 'var(--muted)' }}>{syncLabel}</span>
-            {!isSynced && !isSyncing && (
-              <button
-                onClick={syncData}
-                style={{ color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }}
-              >
-                Retry
-              </button>
-            )}
           </div>
 
           {/* Profile link */}
