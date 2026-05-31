@@ -21,6 +21,11 @@ export async function generateMetadata(): Promise<Metadata> {
     title: appName,
     description: "Offline-capable LET Reviewer application for students and teachers.",
     manifest: "/manifest.json",
+    icons: {
+      icon: "/logo.png",
+      shortcut: "/logo.png",
+      apple: "/logo.png",
+    },
   };
 }
 
