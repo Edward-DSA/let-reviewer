@@ -2,10 +2,17 @@ import { prisma } from '@/lib/prisma';
 import styles from '../admin.module.css';
 import SettingsClient from '@/components/SettingsClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function SettingsPage() {
-  const settings = await prisma.settings.findUnique({
-    where: { id: 'default' },
-  });
+  let settings = null;
+  try {
+    settings = await prisma.settings.findUnique({
+      where: { id: 'default' },
+    });
+  } catch (e) {
+    // DB unavailable at build time — use null defaults
+  }
 
   return (
     <div className="animate-fade-in">

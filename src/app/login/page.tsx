@@ -2,10 +2,19 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import LoginForm from '@/components/LoginForm';
 
+// Always render at request time — never statically pre-render (avoids build-time DB errors)
+export const dynamic = 'force-dynamic';
+
 export default async function LoginPage() {
-  const settings = await prisma.settings.findUnique({ where: { id: 'default' } });
-  const appName = settings?.appName || 'LET Reviewer';
-  const logoUrl = settings?.logoUrl || '';
+  let appName = 'LET Reviewer';
+  let logoUrl = '';
+  try {
+    const settings = await prisma.settings.findUnique({ where: { id: 'default' } });
+    appName = settings?.appName || 'LET Reviewer';
+    logoUrl = settings?.logoUrl || '';
+  } catch (e) {
+    // DB unavailable — use defaults
+  }
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--background-dark)', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>

@@ -1,29 +1,51 @@
 {
   "name": "LET Reviewer Hub",
   "short_name": "LET Reviewer",
-  "description": "Offline-capable LET Reviewer application",
-  "start_url": "/study",
+  "description": "Offline-capable LET Reviewer application for students and teachers",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0a0f1e",
   "theme_color": "#6366f1",
+  "prefer_related_applications": false,
+  "categories": ["education"],
   "icons": [
     {
       "src": "/logo.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
       "src": "/logo.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
       "src": "/logo.png",
       "sizes": "1024x1024",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Start Reviewing",
+      "short_name": "Study",
+      "description": "Jump straight to study categories",
+      "url": "/study",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Teacher Portal",
+      "short_name": "Admin",
+      "description": "Manage questions and view results",
+      "url": "/admin",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": []
 }

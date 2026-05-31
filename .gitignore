@@ -41,3 +41,15 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# PWA generated files
+/public/sw.js
+/public/workbox-*.js
+/public/fallback-*.js
+/public/sw.js.map
+/public/workbox-*.js.map
+/public/fallback-*.js.map
+
+# Android build artifacts
+*.apk
+
