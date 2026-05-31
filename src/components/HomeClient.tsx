@@ -155,11 +155,9 @@ export default function HomeClient({ appName, logoUrl }: HomeClientProps) {
             </button>
             <button
               onClick={() => handleNavigation('/admin', 'Connecting to Portal…')}
-              className="btn"
+              className="btn btn-outline"
               style={{
-                border: '1px solid var(--border-color)',
                 minWidth: '160px',
-                background: 'rgba(255, 255, 255, 0.03)',
               }}
             >
               Teacher Portal
