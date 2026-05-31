@@ -82,6 +82,9 @@ const withPWA = require("next-pwa")({
         cacheableResponse: {
           statuses: [0, 200],
         },
+        matchOptions: {
+          ignoreSearch: true,
+        },
       },
     },
   ],

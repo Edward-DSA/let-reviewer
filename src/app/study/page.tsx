@@ -36,28 +36,26 @@ export default function StudyDashboard() {
     const prefetchQuizRoutes = async () => {
       window.dispatchEvent(new CustomEvent('offline-caching-start'));
       let loaded = 0;
-      const total = categories.length * 2;
+      const total = categories.length;
 
-      categories.forEach(cat => {
-        ['practice', 'exam'].forEach(async (mode) => {
-          try {
-            await fetch(`/study/quiz/${cat.id}?mode=${mode}`);
-            loaded++;
-            if (loaded === total) {
-              localStorage.setItem('offlineCacheReady', 'true');
-              window.dispatchEvent(new CustomEvent('offline-caching-success'));
-              
-              // Trigger system notification
-              sendSystemNotification('Offline Mode Activated! 📡', {
-                body: 'LET Reviewer materials are fully cached. You can now study and take exams completely offline! 📚',
-                icon: logoUrl || '/logo.png',
-                requireInteraction: false,
-              });
-            }
-          } catch (e) {
-            // Silently handle offline/fail
+      categories.forEach(async (cat) => {
+        try {
+          await fetch(`/study/quiz/${cat.id}`);
+          loaded++;
+          if (loaded === total) {
+            localStorage.setItem('offlineCacheReady', 'true');
+            window.dispatchEvent(new CustomEvent('offline-caching-success'));
+            
+            // Trigger system notification
+            sendSystemNotification('Offline Mode Activated! 📡', {
+              body: 'LET Reviewer materials are fully cached. You can now study and take exams completely offline! 📚',
+              icon: logoUrl || '/logo.png',
+              requireInteraction: false,
+            });
           }
-        });
+        } catch (e) {
+          // Silently handle offline/fail
+        }
       });
     };
 
