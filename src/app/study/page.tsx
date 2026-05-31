@@ -26,6 +26,23 @@ export default function StudyDashboard() {
     }).catch(console.warn);
   }, [profile]);
 
+  // Prefetch category quiz pages so they are cached in pages-cache for offline take-exam capability
+  useEffect(() => {
+    if (!categories || categories.length === 0) return;
+    if (typeof navigator !== 'undefined' && !navigator.onLine) return;
+
+    const prefetchQuizRoutes = () => {
+      categories.forEach(cat => {
+        ['practice', 'exam'].forEach(mode => {
+          fetch(`/study/quiz/${cat.id}?mode=${mode}`).catch(() => {});
+        });
+      });
+    };
+
+    const timer = setTimeout(prefetchQuizRoutes, 1500);
+    return () => clearTimeout(timer);
+  }, [categories]);
+
   const requestNotifications = async () => {
     const perm = await Notification.requestPermission();
     setNotifStatus(perm as any);

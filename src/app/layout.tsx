@@ -112,6 +112,15 @@ export default async function RootLayout({
                     .then(function(reg) {
                       console.log('[PWA] Service worker registered. Scope:', reg.scope);
 
+                      // Prefetch main HTML routes to store them in pages-cache for offline access
+                      setTimeout(function() {
+                        if (navigator.onLine) {
+                          ['/study', '/study/profile', '/study/results', '/offline'].forEach(function(route) {
+                            fetch(route).catch(function(err) {});
+                          });
+                        }
+                      }, 2000);
+
                       // When a new SW is waiting, tell it to skip waiting and take over immediately
                       reg.addEventListener('updatefound', function() {
                         var newWorker = reg.installing;
