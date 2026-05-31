@@ -101,7 +101,7 @@ export default function StudyDashboard() {
         <div className="notif-banner" style={{ marginBottom: '1.5rem' }}>
           <span>👤</span>
           <span style={{ flex: 1 }}>You're studying as <strong>Guest Student</strong>. Set your name so your progress is saved correctly.</span>
-          <button className="btn btn-sm btn-primary" onClick={() => router.push('/study/profile')}>Set Name</button>
+          <button className="btn btn-sm btn-primary" onClick={() => window.location.href = '/study/profile'}>Set Name</button>
           <button style={{ color: 'var(--muted)', fontSize: '1.2rem', lineHeight: 1 }} onClick={() => setShowNamePrompt(false)}>✕</button>
         </div>
       )}
@@ -124,11 +124,11 @@ export default function StudyDashboard() {
           <p className="text-muted">Choose a subject and study mode to begin.</p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <Link href="/" className="btn btn-outline">🏠 Home</Link>
-          <button onClick={() => router.push('/study/results')} className="btn btn-outline">
+          <a href="/" className="btn btn-outline">🏠 Home</a>
+          <button onClick={() => window.location.href = '/study/results'} className="btn btn-outline">
             📊 Progress Dashboard
           </button>
-          <button onClick={() => router.push('/study/profile')} className="btn btn-outline">
+          <button onClick={() => window.location.href = '/study/profile'} className="btn btn-outline">
             ⚙️ Profile
           </button>
         </div>
@@ -210,14 +210,14 @@ export default function StudyDashboard() {
                     <button
                       className="btn btn-mode-practice"
                       style={{ flex: 1 }}
-                      onClick={() => router.push(`/study/quiz/${cat.id}?mode=practice`)}
+                      onClick={() => window.location.href = `/study/quiz/${cat.id}?mode=practice`}
                     >
                       🧠 Practice
                     </button>
                     <button
                       className="btn btn-mode-exam"
                       style={{ flex: 1 }}
-                      onClick={() => router.push(`/study/quiz/${cat.id}?mode=exam`)}
+                      onClick={() => window.location.href = `/study/quiz/${cat.id}?mode=exam`}
                     >
                       ⏱️ Exam
                     </button>

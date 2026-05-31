@@ -48,7 +48,7 @@ export default function ResultsPage() {
           <p className="text-muted">Track your progress across all subjects.</p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <button className="btn btn-outline" onClick={() => router.push('/study')}>← Dashboard</button>
+          <button className="btn btn-outline" onClick={() => window.location.href = '/study'}>← Dashboard</button>
         </div>
       </div>
 
@@ -57,7 +57,7 @@ export default function ResultsPage() {
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📝</div>
           <h2 style={{ marginBottom: '0.5rem' }}>No Quizzes Yet</h2>
           <p className="text-muted" style={{ marginBottom: '1.5rem' }}>Complete a quiz to see your performance here.</p>
-          <button className="btn btn-primary" onClick={() => router.push('/study')}>Start Reviewing</button>
+          <button className="btn btn-primary" onClick={() => window.location.href = '/study'}>Start Reviewing</button>
         </div>
       ) : (
         <>

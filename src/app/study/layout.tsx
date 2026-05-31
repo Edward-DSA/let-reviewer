@@ -290,7 +290,7 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
         }}
       >
         {/* Logo */}
-        <Link href="/study" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
+        <a href="/study" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
           {logoUrl ? (
             <img src={logoUrl} alt={appName} style={{ width: 34, height: 34, objectFit: 'contain' }} />
           ) : (
@@ -310,7 +310,7 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
             </div>
           )}
           <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>{appName}</span>
-        </Link>
+        </a>
 
         {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -381,7 +381,7 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* Profile link */}
-          <Link
+          <a
             href="/study/profile"
             style={{
               display: 'flex',
@@ -396,7 +396,7 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
             }}
           >
             👤 {profileName}
-          </Link>
+          </a>
         </div>
       </header>
 

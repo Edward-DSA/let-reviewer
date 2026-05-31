@@ -144,7 +144,7 @@ function QuizContent() {
       <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📭</div>
       <h2 style={{ marginBottom: '0.5rem' }}>No Questions Yet</h2>
       <p className="text-muted" style={{ marginBottom: '1.5rem' }}>This category has no questions. Check back after syncing.</p>
-      <button className="btn btn-primary" onClick={() => router.push('/study')}>Back to Dashboard</button>
+      <button className="btn btn-primary" onClick={() => window.location.href = '/study'}>Back to Dashboard</button>
     </div>
   );
 
@@ -168,8 +168,8 @@ function QuizContent() {
           </div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button className="btn btn-outline" onClick={() => setShowReview(true)}>📋 Review Answers</button>
-            <button className="btn btn-primary" onClick={() => router.push('/study')}>Back to Dashboard</button>
-            <button className="btn btn-success" onClick={() => router.push('/study/results')}>📊 View Progress</button>
+            <button className="btn btn-primary" onClick={() => window.location.href = '/study'}>Back to Dashboard</button>
+            <button className="btn btn-success" onClick={() => window.location.href = '/study/results'}>📊 View Progress</button>
           </div>
         </div>
 
@@ -249,7 +249,7 @@ function QuizContent() {
             ⏱️ {fmtTime(timeLeft)}
           </div>
         )}
-        <button className="btn btn-sm btn-outline" onClick={() => router.push('/study')}>✕ Quit</button>
+        <button className="btn btn-sm btn-outline" onClick={() => window.location.href = '/study'}>✕ Quit</button>
       </div>
 
       {/* Progress */}

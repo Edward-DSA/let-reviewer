@@ -21,14 +21,14 @@ export default function ProfilePage() {
     const trimmed = name.trim() || 'Student';
     await db.profile.update(1, { name: trimmed });
     setSaved(true);
-    setTimeout(() => { setSaved(false); router.push('/study'); }, 1500);
+    setTimeout(() => { setSaved(false); window.location.href = '/study'; }, 1500);
   };
 
   if (loading) return <div className="text-muted" style={{ padding: '2rem' }}>Loading…</div>;
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: 480, margin: '0 auto' }}>
-      <button className="btn btn-outline btn-sm" style={{ marginBottom: '1.5rem' }} onClick={() => router.back()}>← Back</button>
+      <button className="btn btn-outline btn-sm" style={{ marginBottom: '1.5rem' }} onClick={() => window.location.href = '/study'}>← Back</button>
       <div className="card glass">
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{

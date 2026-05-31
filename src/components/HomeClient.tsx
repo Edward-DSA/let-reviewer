@@ -71,7 +71,7 @@ export default function HomeClient({ appName, logoUrl }: HomeClientProps) {
       if (elapsed >= duration) {
         clearInterval(interval);
         // Navigate
-        router.push(targetPath);
+        window.location.href = targetPath;
       }
     }, 20);
 
