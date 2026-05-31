@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+  role     String @default("TEACHER") // ADMIN or TEACHER
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  description      String?
+  examTimerSeconds Int        @default(0)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  questions        Question[]
+  results          Result[]
+}
+
+model Question {
+  id            String   @id @default(cuid())
+  categoryId    String
+  text          String
+  options       String   // Store as JSON string: ["A", "B", "C", "D"]
+  correctAnswer String   // Exact string or index
+  explanation   String?
+  imageUrl      String? @db.MediumText
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Result {
+  id          String   @id @default(cuid())
+  studentName String
+  categoryId  String
+  score       Int
+  total       Int
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id               String @id @default("default")
+  appName          String @default("LET Reviewer")
+  logoUrl          String? @db.MediumText
+  examTimerSeconds Int    @default(1800)
+}

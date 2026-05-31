@@ -1,0 +1,17 @@
+{
+  "name": "LET Reviewer Hub",
+  "short_name": "LET Reviewer",
+  "description": "Offline-capable LET Reviewer application",
+  "start_url": "/study",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

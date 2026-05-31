@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at center, var(--surface-dark) 0%, var(--background-dark) 100%);
+}
+
+.content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  padding: 3rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}

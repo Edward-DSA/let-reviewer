@@ -1,0 +1,94 @@
+.studyLayout {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.syncStatus {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.syncDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--warning-color);
+}
+.syncDot.synced {
+  background-color: var(--secondary-color);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.categoryCard {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100%;
+}
+
+.categoryCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.quizContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.optionBtn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.optionBtn:hover {
+  background-color: rgba(79, 70, 229, 0.1);
+  border-color: var(--primary-color);
+}
+
+.optionBtn.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.timer {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--danger-color);
+}
