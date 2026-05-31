@@ -115,8 +115,18 @@ export default async function RootLayout({
                       // Prefetch main HTML routes to store them in pages-cache for offline access
                       setTimeout(function() {
                         if (navigator.onLine) {
-                          ['/study', '/study/profile', '/study/results', '/offline'].forEach(function(route) {
-                            fetch(route).catch(function(err) {});
+                          window.dispatchEvent(new CustomEvent('offline-caching-start'));
+                          var routes = ['/study', '/study/profile', '/study/results', '/offline'];
+                          var loaded = 0;
+                          routes.forEach(function(route) {
+                            fetch(route)
+                              .then(function() {
+                                loaded++;
+                                if (loaded === routes.length) {
+                                  window.dispatchEvent(new CustomEvent('offline-caching-main-done'));
+                                }
+                              })
+                              .catch(function(err) {});
                           });
                         }
                       }, 2000);

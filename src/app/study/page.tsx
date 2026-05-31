@@ -4,6 +4,8 @@ import { db } from '@/lib/db';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { sendSystemNotification } from '@/lib/notifications';
+
 
 export default function StudyDashboard() {
   const router = useRouter();
@@ -31,17 +33,37 @@ export default function StudyDashboard() {
     if (!categories || categories.length === 0) return;
     if (typeof navigator !== 'undefined' && !navigator.onLine) return;
 
-    const prefetchQuizRoutes = () => {
+    const prefetchQuizRoutes = async () => {
+      window.dispatchEvent(new CustomEvent('offline-caching-start'));
+      let loaded = 0;
+      const total = categories.length * 2;
+
       categories.forEach(cat => {
-        ['practice', 'exam'].forEach(mode => {
-          fetch(`/study/quiz/${cat.id}?mode=${mode}`).catch(() => {});
+        ['practice', 'exam'].forEach(async (mode) => {
+          try {
+            await fetch(`/study/quiz/${cat.id}?mode=${mode}`);
+            loaded++;
+            if (loaded === total) {
+              localStorage.setItem('offlineCacheReady', 'true');
+              window.dispatchEvent(new CustomEvent('offline-caching-success'));
+              
+              // Trigger system notification
+              sendSystemNotification('Offline Mode Activated! 📡', {
+                body: 'LET Reviewer materials are fully cached. You can now study and take exams completely offline! 📚',
+                icon: logoUrl || '/logo.png',
+                requireInteraction: false,
+              });
+            }
+          } catch (e) {
+            // Silently handle offline/fail
+          }
         });
       });
     };
 
     const timer = setTimeout(prefetchQuizRoutes, 1500);
     return () => clearTimeout(timer);
-  }, [categories]);
+  }, [categories, logoUrl]);
 
   const requestNotifications = async () => {
     const perm = await Notification.requestPermission();

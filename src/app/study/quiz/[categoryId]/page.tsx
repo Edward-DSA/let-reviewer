@@ -91,6 +91,13 @@ function QuizContent() {
     });
     const earned = await updateStreakAndBadges(categoryId, finalScore, qs.length);
     setNewBadges(earned);
+    
+    // Dynamic import to trigger system notifications for newly unlocked badges
+    if (earned && earned.length > 0) {
+      import('@/lib/notifications').then(({ triggerBadgeNotification }) => {
+        earned.forEach(id => triggerBadgeNotification(id));
+      }).catch(console.warn);
+    }
   }, [categoryId]);
 
   useEffect(() => {

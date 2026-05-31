@@ -3,6 +3,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { db } from '@/lib/db';
+import { 
+  sendSystemNotification, 
+  checkStreakDangerNotification, 
+  checkDailyStudyNudge 
+} from '@/lib/notifications';
+
 
 // Listen for background-sync success messages from the service worker
 function useSWMessages(onSyncSuccess: (count: number) => void) {
@@ -29,6 +35,28 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
   const [isOnline, setIsOnline]  = useState(true);
   const [showOfflineBanner, setShowOfflineBanner] = useState(false);
   const [syncToastMsg, setSyncToastMsg] = useState('');
+  const [offlineCacheStatus, setOfflineCacheStatus] = useState<'idle' | 'caching' | 'ready'>('idle');
+
+  // Listen for prefetching custom events to update the offline cache indicator
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Check initial state
+    const isReady = localStorage.getItem('offlineCacheReady') === 'true';
+    if (isReady) setOfflineCacheStatus('ready');
+
+    const handleStart = () => setOfflineCacheStatus('caching');
+    const handleSuccess = () => setOfflineCacheStatus('ready');
+
+    window.addEventListener('offline-caching-start', handleStart);
+    window.addEventListener('offline-caching-success', handleSuccess);
+
+    return () => {
+      window.removeEventListener('offline-caching-start', handleStart);
+      window.removeEventListener('offline-caching-success', handleSuccess);
+    };
+  }, []);
+
 
   // Queue a result for background sync when offline
   const queueResultForBgSync = useCallback(async () => {
@@ -80,9 +108,18 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
 
   // Listen for background sync success from the SW
   useSWMessages(useCallback((count: number) => {
-    setSyncToastMsg(`✅ ${count} result${count !== 1 ? 's' : ''} synced to server!`);
+    const msg = `✅ ${count} result${count !== 1 ? 's' : ''} synced to server!`;
+    setSyncToastMsg(msg);
     setTimeout(() => setSyncToastMsg(''), 4000);
-  }, []));
+    
+    // Trigger real system notification if in background
+    if (document.hidden) {
+      sendSystemNotification('Quiz Progress Synced! 📲', {
+        body: `Successfully uploaded ${count} offline quiz result${count !== 1 ? 's' : ''} to the cloud dashboard. Your stats are up to date!`,
+        icon: logoUrl || '/logo.png',
+      });
+    }
+  }, [logoUrl]));
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -128,19 +165,10 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
           setStreak(p.streak);
           setBadgeCount(p.badges.length);
 
-          if (
-            p.notificationsEnabled &&
-            p.lastStudyDate &&
-            typeof Notification !== 'undefined' &&
-            Notification.permission === 'granted'
-          ) {
-            const hoursSince = (Date.now() - p.lastStudyDate) / 3600000;
-            if (hoursSince > 24) {
-              new Notification(`${appName} 📚`, {
-                body: "Time to review! Keep your streak alive 🔥",
-                icon: logoUrl || '/logo.png',
-              });
-            }
+          if (p.notificationsEnabled) {
+            // Check daily reminders and streak danger
+            checkDailyStudyNudge(appName);
+            checkStreakDangerNotification(appName);
           }
         }
       } catch (err) {
@@ -288,6 +316,50 @@ export default function StudyLayout({ children }: { children: React.ReactNode })
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
           {streak > 0 && <span className="chip chip-yellow">🔥 {streak}d</span>}
           {badgeCount > 0 && <span className="chip chip-purple">🏅 {badgeCount}</span>}
+
+          {/* Offline Cache Status Indicator */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              fontSize: '0.8rem',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '99px',
+              padding: '0.25rem 0.65rem',
+              fontWeight: 600,
+            }}
+            title={
+              !isOnline
+                ? 'Studying completely offline using secure local database'
+                : offlineCacheStatus === 'caching'
+                ? 'Downloading study resources for seamless offline preparation...'
+                : 'All pages, assets, and quiz templates are fully cached for offline use.'
+            }
+          >
+            {!isOnline ? (
+              <>
+                <span style={{ fontSize: '0.85rem', color: '#f59e0b', animation: 'pulse 1.5s infinite' }}>📡</span>
+                <span style={{ color: '#fca5a5' }}>Offline Active</span>
+              </>
+            ) : offlineCacheStatus === 'caching' ? (
+              <>
+                <span style={{
+                  display: 'inline-block',
+                  fontSize: '0.85rem',
+                  animation: 'spin 1.5s linear infinite',
+                  color: '#6366f1'
+                }}>🔄</span>
+                <span style={{ color: '#a78bfa' }}>Caching Offline...</span>
+              </>
+            ) : (
+              <>
+                <span style={{ fontSize: '0.85rem', color: '#10b981' }}>📶</span>
+                <span style={{ color: '#a7f3d0' }}>Offline Ready ✅</span>
+              </>
+            )}
+          </div>
 
           {/* Sync status */}
           <div
